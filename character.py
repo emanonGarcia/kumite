@@ -8,7 +8,7 @@ class Character(Combat):
     attack_limit = 10
 
     def __init__(self, **kwargs):
-        self.name = input("Name: ")
+        self.name = self.get_user_input("Name: ")
         self.fighting_style = self.get_fighting_style()
         self.hit_points = self.base_hit_points
         for key, value in kwargs.items():
@@ -31,17 +31,19 @@ class Character(Combat):
             roll += 3
         return roll > 4
 
-    def get_fighting_style(self):
-        style_choice = input("Pick your style: [K]ung-fu, [M]uay Thai, or [J]iu-jitsu: ").lower()
 
-        if style_choice == 'k' or style_choice[0] == 'k':
+    def get_fighting_style(self):
+
+        style_choice = self.get_user_input("Pick your style: [K]ung-fu, [M]uay Thai, or [J]iu-jitsu: ")
+
+        if style_choice[0] == 'k':
             return "Kung-fu"
-        elif style_choice == 'm' or style_choice[0] == 'm':
+        elif style_choice[0] == 'm':
             return "Muay Thai"
-        elif style_choice == 'j' or style_choice[0] == 'j':
+        elif style_choice[0] == 'j':
             return "Jiu-jitsu"
         else:
-            self.get_fighting_style()
+            return self.get_fighting_style()
 
     def rest(self):
         if self.hit_points < self.base_hit_points:

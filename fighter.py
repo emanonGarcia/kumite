@@ -14,7 +14,6 @@ class Fighter(Combat):
                                          self.max_hit_points)
         self.experience = random.randint(self.min_experience,
                                          self.max_experience)
-        self.fighting_style = self.fighting_style
         self.name = self.__class__.__name__
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -37,6 +36,9 @@ class Sagat(Fighter):
     max_hit_points = 10
     max_experience = 10
     sound = "hahaha"
+
+    def battlecry(self):
+        return "HAAHA"
 
 
 class Renato(Fighter):

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import sys
 from character import Character
 from fighter import Monk
@@ -8,11 +10,12 @@ from fighter import Sagat
 class Kumite:
 
     def setup(self):
+        """setup the game """
         self.player = Character()
         self.fighters = [
-          Monk(),
-          Renato(),
-          Sagat()
+            Monk(),
+            Renato(),
+            Sagat()
         ]
 
         self.opponent = self.get_next_fighter()
@@ -28,8 +31,9 @@ class Kumite:
 
         if self.opponent.attack():
             print("{} is attacking!".format(self.opponent.name))
-            self.dodge_response = input("Do you want to dodge? Y/n ").lower()
-            if self.dodge_response == 'y' or self.dodge_response[0] == 'y':
+            self.dodge_response = self.get_user_input("Do you want to dodge? Y/n ")
+
+            if self.dodge_response[0] == 'y':
                 if self.player.dodge():
                     print("You dodged the attack")
                 else:
@@ -42,8 +46,9 @@ class Kumite:
             print("{} did not attack this turn".format(self.opponent.name))
 
     def player_turn(self):
-        self.player_response = input("Do you want to [A]ttack, [R]est, or say [M]atte: ").lower()
-        if self.player_response == "a" or self.player_response[0] == "a":
+        self.player_response = self.get_user_input("Do you want to [A]ttack, [R]est, or say [M]atte: ")
+
+        if self.player_response[0] == "a":
             print("\nYou're attacking {}".format(self.opponent))
             if self.player.attack():
                 if self.opponent.dodge():
@@ -57,12 +62,13 @@ class Kumite:
                     print("You hit {}!".format(self.opponent.name))
             else:
                 print("** You missed! **")
-        elif self.player_response == "r" or self.player_response[0] == "r":
+
+        elif self.player_response[0] == "r":
             self.player.rest()
-        elif self.player_response == "m" or self.player_response[0] == "m":
+        elif self.player_response[0] == "m":
             print("Quitter!")
             sys.exit()
-        else:
+        else:  # Focus on testing this theory
             self.player_turn()
 
     def cleanup(self):
@@ -72,10 +78,13 @@ class Kumite:
             self.player.experience += self.opponent.experience
             self.opponent = self.get_next_fighter()
 
+
     def __init__(self):
 
         self.setup()
 
+    def run(self):
+        '''Runs infinitely, or until loss'''
         while self.player.hit_points and (self.opponent or self.fighters):
             print("\n" + "="*20)
             print(self.player)
@@ -93,4 +102,5 @@ class Kumite:
 
 if __name__ == "__main__":
     print("Welcome to the Kumite. Test your might!")
-    Kumite()
+    game = Kumite()
+    game.run()
